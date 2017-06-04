@@ -5,19 +5,19 @@ setup_git() {
   git config --global user.name "Travis CI"
 }
 
-commit_website_files() {
-  sed -i "/ENV\ ICE_VERSION/c\ENV\ ICE_VERSION\ $NEW_VERSION" Dockerfile
-  git checkout -b gh-pages
-  git add . *.html
-  git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
+update_version() {
+  sed -i "/ENV\ ICE_VERSION/c\ENV\ ICE_VERSION\ $NEW_VERSION" ice/Dockerfile
+  git commit ice/Dockerfile -m "Created new release: $NEW_VERSION"
+  git tag -m "New version of ICE" "$NEW_VERSION"
 }
 
 upload_files() {
-  git remote add origin-pages https://${GH_TOKEN}@github.com/MVSE-outreach/resources.git > /dev/null 2>&1
-  git push --quiet --set-upstream origin-pages gh-pages 
+  git remote rm origin
+  git remote add origin https://${GH_TOKEN}@github.com/jonbrouse/consumer-repo.git > /dev/null 2>&1
+  git push --quiet --set-upstream origin
+  git push --tags
 }
 
-#setup_git
-commit_website_files
+setup_git
+update_version
 upload_files
-echo "Testing"
