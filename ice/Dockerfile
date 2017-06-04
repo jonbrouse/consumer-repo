@@ -1,0 +1,2 @@
+ENV ICE_VERSION 3.0
+
