@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -ex
 
 setup_git() {
   git config --global user.email "travis@travis-ci.org"
@@ -13,7 +13,7 @@ update_version() {
 
 upload_files() {
   git remote rm origin
-  git remote add origin https://${GH_TOKEN}@github.com/jonbrouse/consumer-repo.git > /dev/null 2>&1
+  git remote add origin https://$GH_TOKEN@github.com/jonbrouse/consumer-repo.git > /dev/null 2>&1
   git push --quiet --set-upstream origin
   git push --tags
 }
